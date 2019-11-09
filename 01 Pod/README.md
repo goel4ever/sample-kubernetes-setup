@@ -69,6 +69,7 @@ ping 10.36.4.3       # Execute the command from master node. This is one way to 
 kubectl exec -it nginx-pod -- /bin/sh # Getting a shell of a running pod
 # hostname
 # exit
+kubectl exec -it nginx-pod -- sh      # Getting a shell of a running pod
 ```
 
 #### Delete a pod

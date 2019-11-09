@@ -64,7 +64,15 @@ Selector can NOT be either have matchLabels or matchExpressions, but a key value
 
 ```sh
 kubectl create -f nginx-deploy.yaml     # Make sure to create a deployment before creating a service or use an existing deployment to skip this step
-kubectl create -f my-service-np.yaml        # Create a NodePort service
+kubectl create -f my-service-np.yaml    # Create a NodePort service
+kubectl apply -f my-service-np.yaml     # Create a NodePort service
+```
+
+###### [GCP] Create a firewall rule to allow TCP traffic on your node port
+
+```sh
+gcloud compute firewall-rules create test-node-port --allow tcp:[NODE_PORT]
+gcloud compute firewall-rules create test-node-port --allow tcp:31000
 ```
 
 #### Verify Service status
