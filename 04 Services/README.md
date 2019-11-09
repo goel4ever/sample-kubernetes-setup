@@ -8,9 +8,9 @@ Handles scenarios like:
 
 Types of Services:
 
-- **ClusterIP** - Reachable only within the cluster. This is what a frontend app would use to connect to backend.
+- **ClusterIP** - Reachable only within the cluster. Usually backends are configured with ClusterIP. This is what a frontend app would use to connect to backend.
 - **NodePort** - Expose app to the outside world
-- **LoadBalancer** - Balance incoming traffic across all the nodes
+- **LoadBalancer** - Expose app to the outside world. Balance incoming traffic across all the nodes
 - **ExternalName** - `GCP doc says this is available`
 - **Headless** - `GCP doc says this is available`
 
@@ -60,6 +60,8 @@ Selector can NOT be either have matchLabels or matchExpressions, but a key value
 
 ## Using the manifest yaml file
 
+### Setup using NodePort
+
 #### Creating a Service
 
 ```sh
@@ -74,6 +76,26 @@ kubectl apply -f my-service-np.yaml     # Create a NodePort service
 gcloud compute firewall-rules create test-node-port --allow tcp:[NODE_PORT]
 gcloud compute firewall-rules create test-node-port --allow tcp:31000
 ```
+
+### Setup using Load Balancer
+
+When the applicaiton is deployed on multiple nodes, you'll need a Load balancer instead of a NodePort to route your request. Otherwise you'll need to configure all your node external IPs in your domain DNS, which can result in two concerns:
+
+- If a node crashes, a node will be created. With this each time you'll need to update your DNS settings
+- You'll have to completely rely on your domain service to balance load of incoming request, with you having no control over the traffic.
+
+Remember, there is a cost associated with each Load Balancer you add to the application. In case you are looking to avoid this cost, look at ingress (example in separate section)
+
+```sh
+kubectl create -f nginx-deploy.yaml     # Make sure to create a deployment before creating a service or use an existing deployment to skip this step
+kubectl create -f my-service-lb.yaml    # Create a LoadBalancer service
+kubectl apply -f my-service-lb.yaml     # Create a LoadBalancer service
+kubectl expose deploy nginx-deploy --name=my-service --port=80 --type=LoadBalancer     # Create a LoadBalancer service
+
+You can now simply list the service and hit the external IP to be able to access the application via browser
+```
+
+### Verfication, Testing and Cleanup
 
 #### Verify Service status
 
