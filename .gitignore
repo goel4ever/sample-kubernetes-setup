@@ -1,2 +1,5 @@
 .idea
 .vs_code
+
+examples/
+kube-state-metrics/
