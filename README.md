@@ -2,6 +2,13 @@
 
 Instructions and sample configuration files for Kubernetes environment
 
+### TODO for me
+
+- Section for installation, tools to get started meanwhile you go through overview
+- Have a section for defining architecture with smallest entities (and in a pdf)
+- Its better to breakdown GitHub project content in lessons
+- List everything that would be halpeful to speed up in the process (image registry locations, etc)
+
 ### Quick Tip
 
 #### Test your internal IPs by creating Busybox

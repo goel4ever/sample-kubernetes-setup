@@ -1,6 +1,6 @@
 # Application Example 01
 
-In this section we'll setup a complete deployment for a stateless application to bring entire understanding of Kubernetes together.
+In this section we'll setup a complete deployment for a `stateless application` to bring entire understanding of Kubernetes together.
 
 ## Application Details
 
