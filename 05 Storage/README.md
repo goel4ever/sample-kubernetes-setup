@@ -205,3 +205,81 @@ kubectl delete configmap game-config              # Delete an existing configMap
 kubectl delete configmap example-redis-config     # Delete an existing configMap
 kubectl delete configmap special-config           # Delete an existing configMap
 ```
+
+## secret
+
+A kubernetes object that contains small amount of sensitive data, like password, token, key, etc. On a high level, secrets are used to reduce the risk of exposing confidential information. Stored in etcd datastore.
+Secrets are created outside of pods, without caring which pod is going to use it. Secrets are sent only to the target nodes.
+
+> Note: Make sure to create secret before creating the pod
+> Remember: Each secret can be at max of 1Mb size
+
+secret can be of one of the following types:
+
+- generic
+  - file
+  - directory
+  - literal value
+- docker-registry
+- tls
+
+#### Create a secret
+
+###### Create using kubectl
+
+```sh
+kubectl create secret <type> <name> <data>
+kubectl create secret <type> <name> --from-file=<directory>
+kubectl create secret <type> <name> --from-file=<file>
+kubectl create secret <type> <name> --from-literal=<key>=<value>
+
+# Create the desired files
+echo -n 'admin' > ./username.txt
+echo -n '1f2d3g4j54435' > ./password.txt
+
+# Create the secret
+kubectl create secret generic db-user-pass --from-file=./username.txt --from-file=./password.txt
+```
+
+###### Create manually
+
+```sh
+echo -n 'admin' | base64
+echo -n '1f2d3g4j54435' | base64
+kubectl create -f secret-db.yaml
+```
+
+#### Decoding & Verify the secret
+
+```sh
+kubectl get secret db-user-pass         # Display all the secrets exposed based on the command
+kubectl describe secret db-user-pass    # Display complete details of a specific secret. Actual value of a secret will not be displayed.
+
+kubectl get secret db-user-pass -o yaml   # Get the encoded secrets from this command
+
+# Display decoded secret values
+echo 'YWRtaW4=' | base64 --decode
+echo 'MWYyZDF1MmU2N2Rm' | base64 --decode
+```
+
+#### Consuming Secrets as Volumes and Env variables
+
+```sh
+kubectl create -f pod-secret-volume.yaml
+```
+
+#### Verify secret in a pod
+
+###### Secret as a volume
+
+```sh
+kubectl exec test-secret ls /etc/foo
+kubectl exec test-secret cat /etc/foo/username    # Displays decrypted value
+kubectl exec test-secret cat /etc/foo/password    # Displays decrypted value
+```
+
+###### Secret as Environment variable
+
+```sh
+kubectl exec test-secret-env env | grep SECRET    # Displays decrypted value
+```
