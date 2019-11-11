@@ -36,6 +36,14 @@ Here is an example, make sure to put in your zone, cluster and project:
 gcloud container clusters get-credentials example-cluster --zone us-central1-a --project example-183355
 ```
 
+### References
+
+```sh
+https://kubectl.docs.kubernetes.io/
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+```
+
 ### Contribute
 
 Please free to throw in suggesstions, point out issues or collaborate with me. I am simply a message away

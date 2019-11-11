@@ -40,6 +40,14 @@ kubectl create -f <file.yaml>
 kubectl create -f nginx-pod.yaml
 ```
 
+#### Alternate way of creating a pod
+
+`run` command will start running 1 or more instances of a container image in a pod on your cluster.
+
+```sh
+kubectl run kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 --port=8080
+```
+
 #### Verify pod status
 
 ```sh
